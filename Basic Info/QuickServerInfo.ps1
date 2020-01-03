@@ -110,7 +110,7 @@ $MyResult += "<h1>Overview</h1>"
     ##Tail of errors
     $MyResult += "<h2>Up to 10 Error messages since yesterday</h2>"
     $Yesterday = (Get-Date) - (New-TimeSpan -Day 1)
-    $MyResult += Get-WinEvent -FilterHashtable @{LogName='system'; Level=1,2; StartTime=$Yesterday } -maxevents 10 -ErrorAction SilentlyContinue| ConvertTo-HTML -Fragment -Property TimeCreated,ID,message
+    $MyResult += Get-WinEvent -FilterHashtable @{LogName='system'; Level=1,2; StartTime=$Yesterday } -maxevents 10 -ErrorAction SilentlyContinue | Sort-Object timecreated -Descending | ConvertTo-HTML -Fragment -Property TimeCreated,ID,message
 
     ##Updates without reboot
     $MyResult += "<h2>Updates installed after rebooted</h2>"
