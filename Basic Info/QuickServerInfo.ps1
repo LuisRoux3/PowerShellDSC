@@ -41,30 +41,30 @@ tr:nth-child(even) {
 </style>
 "@
 
+$BDetailed = $true
+
+<#
+    $title = "Level of detail"
+    $message = "Do you want to check dig more details than basics?"
+
+    $yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", `
+        "Runs all the sections."
+
+    $no = New-Object System.Management.Automation.Host.ChoiceDescription "&No", `
+        "Gathers overview only."
+
+    $options = [System.Management.Automation.Host.ChoiceDescription[]]($yes, $no)
+
+    $result = $host.ui.PromptForChoice($title, $message, $options, 1)
+
+    switch ($result){
+        0 {$BDetailed = $true}
+        1 {$BDetailed = $false}
+    }
+#>
+
+
 $MyResult = @()
-$BDetailed = $false
-
-$title = "Level of detail"
-$message = "Do you want to check dig more details than basics?"
-
-$yes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", `
-    "Runs all the sections."
-
-$no = New-Object System.Management.Automation.Host.ChoiceDescription "&No", `
-    "Gathers overview only."
-
-$options = [System.Management.Automation.Host.ChoiceDescription[]]($yes, $no)
-
-$result = $host.ui.PromptForChoice($title, $message, $options, 1)
-
-switch ($result){
-    0 {$BDetailed = $true}
-    1 {$BDetailed = $false}
-}
-
-
-
-
 #Global Status
 $MyResult += "<h1>Overview</h1>"
 
@@ -146,8 +146,7 @@ if ($BDetailed) {
     $KWinevents = Get-WinEvent -FilterHashtable @{LogName='System'; Level=1,2; StartTime=$LastWeek } -maxevents 1000 -ErrorAction SilentlyContinue
     $KWinevents += Get-WinEvent -FilterHashtable @{LogName='Application'; Level=1,2; StartTime=$LastWeek } -maxevents 1000 -ErrorAction SilentlyContinue
     $KWinevents += Get-WinEvent -FilterHashtable @{LogName='Setup'; Level=1,2; StartTime=$LastWeek } -maxevents 1000 -ErrorAction SilentlyContinue
-    $MyResult += $KWinevents | ConvertTo-HTML -Fragment -Property TimeCreated,ProviderName,Id,LevelDisplayName,Message
-
+    $MyResult += $KWinevents | Sort-Object timecreated -Descending | ConvertTo-HTML -Fragment -Property TimeCreated,ProviderName,Id,LevelDisplayName,Message
 
     #Disk
     $MyResult += "<h1>Disk detail</h1>"
