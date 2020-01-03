@@ -1,3 +1,5 @@
+#Requires -RunAsAdministrator
+
 function Get-BasicInfo {
 #This function is used to write "basic info  from current computer and write in HTML format into a variable
 #Returns HTML code
@@ -132,7 +134,7 @@ function Get-DetailedInfo {
 }#End function Get-DetailedInfo
 
 
-function Ask-DetailLevel {
+function Get-DetailLevel {
     $title = "Level of detail"
     $message = "Do you want to check dig more details than basics?"
 
@@ -146,7 +148,7 @@ function Ask-DetailLevel {
         0 {return $true}
         1 {return $false}
     }
-}#End function Ask-DetailLevel
+}#End function Get-DetailLevel
 
 #region ----- MAIN -----
 #CSS for eye-friendly reports (https://www.w3schools.com/css/)
@@ -194,7 +196,7 @@ tr:nth-child(even) {
 
 $HTMLContent = @()
 $HTMLContent += Get-BasicInfo 
-if(Ask-DetailLevel){$HTMLContent += Get-DetailedInfo}
+if(Get-DetailLevel){$HTMLContent += Get-DetailedInfo}
 
 #Path for output
 $MyOutFile_HTML = $env:TEMP + "\QuickServerInfo_" + (Get-Date -Format yyyyMMdd_hhmmss) + "_.html"
