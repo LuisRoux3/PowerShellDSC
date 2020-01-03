@@ -1,5 +1,3 @@
-#Requires -RunAsAdministrator
-
 function Get-BasicInfo {
 #This function is used to write "basic info  from current computer and write in HTML format into a variable
 #Returns HTML code
@@ -12,6 +10,11 @@ function Get-BasicInfo {
     $ComputerName = $env:COMPUTERNAME
     $HTMLContent += "<h3>$ComputerName</h3>"
     
+    #Hostname
+    $HTMLContent += "<h2>OS Info</h2>"
+    $HTMLContent += "<h3>OS Name: " + (Get-CimInstance Win32_OperatingSystem).Caption + "</br>"
+    $HTMLContent += "OS Version: " + (Get-CimInstance Win32_OperatingSystem).Version + "</br>"
+
     #When Rebooted
     $HTMLContent += "<h2>Last Boot Uptime (UTC)</h2>"
     $LastBootUptime = '{0:u}' -f ((Get-CimInstance Win32_OperatingSystem).LastBootUpTime)
@@ -67,6 +70,14 @@ function Get-DetailedInfo {
     $HTMLContent += "<h1>Hotfix detail</h1>"
     $HTMLContent += get-ciminstance -class win32_quickfixengineering | Sort-Object installedon -Descending -ErrorAction SilentlyContinue | ConvertTo-HTML -Fragment -Property InstalledOn,HotFixID,Description,name,Caption
     
+    #Detail of OS (Including above's info)
+    $HTMLContent += "<h1>OS detail</h1>"
+    $HTMLContent += "<h3>OS Name: " + (Get-CimInstance Win32_OperatingSystem).Caption + "</br>"
+    $HTMLContent += "OS Version: " + (Get-CimInstance Win32_OperatingSystem).Version + "</br>"
+    $HTMLContent += "OS Root: " + (Get-CimInstance Win32_OperatingSystem).SystemDirectory + "</br>"
+    $HTMLContent += "CurrentCulture: " + (Get-Host).CurrentCulture + "</br>"
+    $HTMLContent += "CurrentUICulture: " + (Get-Host).CurrentUICulture + "</h3>"
+
     #Process
     $HTMLContent += "<h1>Process Detail</h1>"
     
@@ -151,6 +162,10 @@ function Get-DetailLevel {
 }#End function Get-DetailLevel
 
 #region ----- MAIN -----
+<#
+    This script is to watch a .html file with information to help in the troubleshooting
+    Some data are gather from perfmon counters and depends on the OS language
+#>
 #CSS for eye-friendly reports (https://www.w3schools.com/css/)
 $Header = @"
 <style>
