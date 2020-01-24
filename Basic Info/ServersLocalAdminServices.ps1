@@ -22,5 +22,3 @@ foreach ($OneServer in ($AllServers.DNSHostName)) {
         Write-Warning "Error accessing '$oneserver'"
     } 
 }
-
-#Get-LocalGroupMember -SID S-1-5-32-544
