@@ -149,6 +149,12 @@ function Get-DetailedInfo {
     #Logins
     $HTMLContent += "<h1>User Logins</h1>"
     
+#Get-LocalGroupMember -SID S-1-5-32-544
+
+    #Member of local administrator group
+    $HTMLContent += "<h2>Members of Local administrator group</h2>"
+    $HTMLContent += Get-LocalGroupMember -SID S-1-5-32-544 | Select-Object name,PrincipalSource,ObjectClass,SID | Sort-Object Name | ConvertTo-HTML -Fragment
+
     #Local user lastlogon
     $HTMLContent += "<h2>Local user logins sort by Last Logon</h2>"
     $HTMLContent += Get-LocalUser | Select-Object name,LastLogon,enabled,AccountExpires,PasswordLastSet,sid,Description | Sort-Object -Descending LastLogon | ConvertTo-HTML -Fragment
