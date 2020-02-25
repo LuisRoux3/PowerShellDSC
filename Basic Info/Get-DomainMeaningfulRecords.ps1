@@ -88,15 +88,15 @@ function Get-DomainMeaningfulRecords {
             Select-Object @{label='Name';expression={"$Domain"}},@{label='Type';expression={'DMARC'}},@{label='Value';expression={$_.strings}}
     
         #Obtain DKIM records
-        $MyResult += Resolve-DnsName -Server $ServerDNS -name "selector._domainkey.$Domain" -Type ALL -DnsOnly |
+        $MyResult += Resolve-DnsName -Server $ServerDNS -name "selector._domainkey.$Domain" -Type TXT -DnsOnly |
             where-object {($_.strings -like 'v=DKIM1;*')} | 
             Select-Object @{label='Name';expression={"$Domain"}},@{label='Type';expression={'DKIM'}},@{label='Value';expression={"Exist selector._domainkey.$Domain"}}
 
-        $MyResult += Resolve-DnsName -Server $ServerDNS -name "selector1._domainkey.$Domain" -Type ALL -DnsOnly |
+        $MyResult += Resolve-DnsName -Server $ServerDNS -name "selector1._domainkey.$Domain" -Type TXT -DnsOnly |
             where-object {($_.strings -like 'v=DKIM1;*')} | 
             Select-Object @{label='Name';expression={"$Domain"}},@{label='Type';expression={'DKIM'}},@{label='Value';expression={"Exist selector1._domainkey.$Domain"}}
 
-        $MyResult += Resolve-DnsName -Server $ServerDNS -name "selector2._domainkey.$Domain" -Type ALL -DnsOnly |
+        $MyResult += Resolve-DnsName -Server $ServerDNS -name "selector2._domainkey.$Domain" -Type TXT -DnsOnly |
             where-object {($_.strings -like 'v=DKIM1;*')} | 
             Select-Object @{label='Name';expression={"$Domain"}},@{label='Type';expression={'DKIM'}},@{label='Value';expression={"Exist selector2._domainkey.$Domain"}}
     
