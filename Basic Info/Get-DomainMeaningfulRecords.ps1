@@ -9,7 +9,7 @@ function Get-DomainMeaningfulRecords {
             MX:     Any MX record, discarding precedence
             SPF:    Any TXT record like v=spf1* (if more than one should be considered an error)
             DMARC:  Any TXT record in the "Subdomain" _dmarc.<Domain> like v=DMARC1;*
-            DKIM:   Any TXT record in the "subdomain" selector._domainkey.<Domain> like v=DKIM1;* Writes "Exist selector" (Selector, Selector1, Selector2)
+            DKIM:   Any TXT record in the "subdomain" selector._domainkey.<Domain> like v=DKIM1;* (checks Selector, Selector1, Selector2)
             VerfMS: Any TXT record like v=verifydomain MS=*
         
         Queries 8.8.8.8 DNS server so will need internet access
@@ -90,15 +90,15 @@ function Get-DomainMeaningfulRecords {
         #Obtain DKIM records
         $MyResult += Resolve-DnsName -Server $ServerDNS -name "selector._domainkey.$Domain" -Type TXT -DnsOnly |
             where-object {($_.strings -like 'v=DKIM1;*')} | 
-            Select-Object @{label='Name';expression={"$Domain"}},@{label='Type';expression={'DKIM'}},@{label='Value';expression={"Exist selector._domainkey.$Domain"}}
+            Select-Object @{label='Name';expression={"$Domain"}},@{label='Type';expression={'DKIM'}},@{label='Value';expression={$_.strings}}
 
         $MyResult += Resolve-DnsName -Server $ServerDNS -name "selector1._domainkey.$Domain" -Type TXT -DnsOnly |
             where-object {($_.strings -like 'v=DKIM1;*')} | 
-            Select-Object @{label='Name';expression={"$Domain"}},@{label='Type';expression={'DKIM'}},@{label='Value';expression={"Exist selector1._domainkey.$Domain"}}
+            Select-Object @{label='Name';expression={"$Domain"}},@{label='Type';expression={'DKIM'}},@{label='Value';expression={$_.strings}}
 
         $MyResult += Resolve-DnsName -Server $ServerDNS -name "selector2._domainkey.$Domain" -Type TXT -DnsOnly |
             where-object {($_.strings -like 'v=DKIM1;*')} | 
-            Select-Object @{label='Name';expression={"$Domain"}},@{label='Type';expression={'DKIM'}},@{label='Value';expression={"Exist selector2._domainkey.$Domain"}}
+            Select-Object @{label='Name';expression={"$Domain"}},@{label='Type';expression={'DKIM'}},@{label='Value';expression={$_.strings}}
     
         $MyResult # Returns it
     }
