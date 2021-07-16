@@ -9,6 +9,7 @@ PowerShell code for "one day"... use Distributed State Configuration ... I promi
 The script is just to log in a server, run two lines of code and get a quick .html with basic information to help in the troubleshooting.
 
     $ScriptFromGitHub = Invoke-WebRequest https://raw.githubusercontent.com/LuisRoux3/PowerShellDSC/master/Basic%20Info/QuickServerInfo.ps1
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
     Invoke-Expression $($ScriptFromGitHub.Content)
 
 - Hostname
