@@ -16,4 +16,4 @@ Install-Module -Name ExchangeOnlineManagement
 
 ## User-msg-trace.ps1
 
-Ask for an email and check all the user's send message. First approach to Exchange PowerShell V2.
+Ask for an email and check all the user's send message. First approach to Exchange PowerShell V2..
