@@ -1,6 +1,6 @@
 # PowerShellDSC
 
-PowerShell code for "one day"... use Distributed State Configuration ... I promise... did I said already "one day"?
+PowerShell code for "one day"... use Desired State Configuration ... I promise... did I said already "one day"?
 
 ## Basic info
 
